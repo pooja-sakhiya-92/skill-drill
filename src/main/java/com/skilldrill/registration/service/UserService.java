@@ -1,7 +1,9 @@
 package com.skilldrill.registration.service;
 
-import org.springframework.stereotype.Service;
+import com.skilldrill.registration.dto.UserDto;
 
-@Service
+
 public interface UserService {
+
+    UserDto registerUser(UserDto userDto);
 }

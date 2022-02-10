@@ -6,7 +6,7 @@ spring:
       database: skill-drill
   messages:
     basename: messages/response-messages, messages/email-messages, messages/exception-messages
-
+      
 sender:
   email: ucfsgreenapex@gmail.com
   password: abcd1234@@

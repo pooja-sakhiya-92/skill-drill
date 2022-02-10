@@ -1,5 +1,5 @@
 package com.skilldrill.registration.exceptions;
-/*
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,8 +14,8 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public final ResponseEntity<Object> handelNotFound(NotFoundException ex, WebRequest request) {
-        com.ucfs.exceptions.ExceptionResponse exceptionResponse =
-                new com.ucfs.exceptions.ExceptionResponse(
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
                         new Date(),
                         ex.getMessage(),
                         String.valueOf(HttpStatus.NOT_FOUND),
@@ -25,8 +25,8 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(wrongCredentialException.class)
     public final ResponseEntity<Object> handelWrongCredential(wrongCredentialException ex, WebRequest request) {
-        com.ucfs.exceptions.ExceptionResponse exceptionResponse =
-                new com.ucfs.exceptions.ExceptionResponse(
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
                         new Date(),
                         ex.getMessage(),
                         String.valueOf(HttpStatus.BAD_REQUEST),
@@ -36,8 +36,8 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidFieldOrEmptyFieldException.class)
     public final ResponseEntity<Object> handleInvalidFieldOrEmptyField(InvalidFieldOrEmptyFieldException ex, WebRequest request) {
-        com.ucfs.exceptions.ExceptionResponse exceptionResponse =
-                new com.ucfs.exceptions.ExceptionResponse(
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
                         new Date(),
                         ex.getMessage(),
                         String.valueOf(HttpStatus.NOT_ACCEPTABLE),
@@ -45,10 +45,10 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @ExceptionHandler(com.ucfs.exceptions.InvalidRequestException.class)
-    public final ResponseEntity<Object> handleInvalidRequestException(com.ucfs.exceptions.InvalidRequestException ex, WebRequest request) {
-        com.ucfs.exceptions.ExceptionResponse exceptionResponse =
-                new com.ucfs.exceptions.ExceptionResponse(
+    @ExceptionHandler(InvalidRequestException.class)
+    public final ResponseEntity<Object> handleInvalidRequestException(InvalidRequestException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
                         new Date(),
                         ex.getMessage(),
                         String.valueOf(HttpStatus.EXPECTATION_FAILED),
@@ -57,4 +57,3 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
     }
 
 }
-*/
