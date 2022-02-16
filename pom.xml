@@ -81,6 +81,32 @@
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>8.25.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>5.3.14</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.thymeleaf</groupId>-->
+        <!--            <artifactId>thymeleaf-spring5</artifactId>-->
+        <!--            <version>3.0.12.RELEASE</version>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>2.6.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>

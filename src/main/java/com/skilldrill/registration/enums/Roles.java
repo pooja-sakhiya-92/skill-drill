@@ -1,4 +1,4 @@
-package com.skilldrill.registration.model.enums;
+package com.skilldrill.registration.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

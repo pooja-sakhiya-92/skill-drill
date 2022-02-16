@@ -30,7 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(messageSource.getMessage("user.not.found", null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(user.getRole());
-        boolean restrictFlag = user.getActive();
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), restrictFlag, true, true, true, authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getActive(), true, true, true, authorities);
     }
 }

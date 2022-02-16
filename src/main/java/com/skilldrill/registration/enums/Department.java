@@ -1,4 +1,4 @@
-package com.skilldrill.registration.model.enums;
+package com.skilldrill.registration.enums;
 
 public enum Department {
     BACKEND, FRONTEND, UI, UX, QA, HR

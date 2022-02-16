@@ -1,8 +1,10 @@
 package com.skilldrill.registration.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class UserDto {
 
     private String id;
@@ -22,6 +24,8 @@ public class UserDto {
     private String department;
 
     private String role;
+
+    private TechnicalDetailsDto technicalDetails;
 
     private Boolean active;
 

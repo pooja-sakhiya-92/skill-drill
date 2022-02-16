@@ -6,9 +6,18 @@ spring:
       database: skill-drill
   messages:
     basename: messages/response-messages, messages/email-messages, messages/exception-messages
+  thymeleaf:
+    encoding: UTF-8
+    prefix:
+      classpath: /templates/
 
 sender:
   email: ucfsgreenapex@gmail.com
   password: abcd1234@@
+
+twilio:
+  account_sid: AC7ebcaaf3cd3f3c5882dbaaae75592f28
+  auth_token: d8d4d8b8ed246a83ce00b97d917bc5a9
+  path_service_sid: VAe27736a1fd653f112159a6f65cc18232
   
 
