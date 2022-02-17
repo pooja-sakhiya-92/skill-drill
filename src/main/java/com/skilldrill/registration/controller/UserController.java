@@ -13,6 +13,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -98,6 +99,17 @@ public class UserController {
                 messageSource.getMessage("technical-details_update_successful",
                         null, MessageSourceAlternateResource.TECHNICAL_DETAILS_UPDATE_SUCCESSFUL, Locale.ENGLISH), responseBody));
     }
+
+    @GetMapping("google-login")
+    public ResponseEntity<?> loginUsingGoogle(Authentication principal) {
+        return ResponseEntity.ok().body(userService.user(principal));
+    }
+
+    @PutMapping("add/user-details")
+    public ResponseEntity<?> addUserDetails(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok().body(userService.updateUserDetails(userDto));
+    }
+
 
     @PutMapping("update/basic-details")
     public ResponseEntity<?> updateBasicDetails(@RequestBody UserDto userDto) {

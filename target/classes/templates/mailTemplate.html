@@ -1,36 +1,18 @@
-<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
-<!--<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">-->
-<!--<head><h2>Welcome</h2>-->
-<!--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <p>Hello <p th:text="${fname}"></p>,</p>-->
-<!--    <p>Your registration process is complete, and your account status is: <b th:text="${isactive}"></b></p>-->
-<!--    <p>Please login to access your account.</p>-->
-<!--    <br>-->
-<!--    <p>Regards</p>-->
-<!--    <p>Admin@skill-drill</p>-->
-<!--</body>-->
-<!--</html>-->
-
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Good Thymes Virtual Grocery</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<!--    <link rel="stylesheet" type="text/css" media="all"-->
-<!--          href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />-->
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 </head>
 
 <body>
 
 <p th:text="'Hello '+${fname}+','"></p>
-    <p>Your registration process is complete, and your account status is: <b th:text="${isactive}"></b></p>
-    <p>Please login to access your account.</p>
-    <br>
-    <p>Regards</p>
-    <p>Admin@skill-drill</p>
+<p>Your registration process is complete, and your account status is: <b th:text="${isactive}"></b></p>
+<p>Please login to access your account.</p>
+<br>
+<p>Regards</p>
+<p>Admin@skill-drill</p>
 
 </body>
 

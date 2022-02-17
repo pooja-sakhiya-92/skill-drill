@@ -1,8 +1,11 @@
 package com.skilldrill.registration.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skilldrill.registration.constants.MessageSourceAlternateResource;
 import com.skilldrill.registration.dto.UserDto;
 import com.skilldrill.registration.dto.UserInfoDto;
+import com.skilldrill.registration.enums.Department;
+import com.skilldrill.registration.enums.Roles;
 import com.skilldrill.registration.exceptions.InvalidRequestException;
 import com.skilldrill.registration.exceptions.NotFoundException;
 import com.skilldrill.registration.mapper.UserMapper;
@@ -15,6 +18,7 @@ import com.skilldrill.registration.utilities.misc.NanoToolkit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -68,7 +73,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto verifyEmail(String email, String otp){
+    public UserDto user(Authentication principal) {
+        User user = new User();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        Map<?, ?> response = objectMapper.convertValue(principal.getPrincipal(), Map.class);
+        Map<?, ?> attribute = objectMapper.convertValue(response.get("attributes"), Map.class);
+        String generatedPassword = attribute.get("given_name") + "G00gle$" + attribute.get("family_name");
+        user.setFirstName((String) attribute.get("given_name"));
+        user.setLastName((String) attribute.get("family_name"));
+        user.setEmail((String) attribute.get("email"));
+        user.setPassword(bCryptPasswordEncoder.encode(generatedPassword));
+        user.setRole(Roles.ROLE_GENERAL);
+        user.setActive(true);
+        userRepository.save(user);
+        System.out.println(principal.getPrincipal());
+        return userMapper.toDto(user);
+    }
+
+
+    @Override
+    public UserDto updateUserDetails(UserDto userDetails) {
+        User user = userRepository.findByEmail(userDetails.getEmail())
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        user.setPosition(userDetails.getPosition());
+        user.setDepartment(Department.valueOf(userDetails.getDepartment()));
+        user.setPhone(userDetails.getPhone());
+        user.setActive(true);
+        user.setUpdateFlag(true);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return userMapper.toDto(user);
+    }
+
+    @Override
+    public UserDto verifyEmail(String email, String otp) {
         User userFromDb = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
@@ -77,9 +116,7 @@ public class UserServiceImpl implements UserService {
         try {
             miniToolkit.sendAcknowledgement(new UserInfoDto(userFromDb.getFirstName(),
                     HelperFunctions.getAccountStatus(userFromDb), userFromDb.getEmail()));
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
         return userMapper.toDto(userFromDb);

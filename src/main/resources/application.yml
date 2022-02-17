@@ -6,18 +6,27 @@ spring:
       database: skill-drill
   messages:
     basename: messages/response-messages, messages/email-messages, messages/exception-messages
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 611158905796-2t65k3tbj4rn3a7rr03n1mdumpkd7f33.apps.googleusercontent.com
+            client-secret: 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
+    resource:
+      filter-order: 3
+
+server:
+  port: 9090
   thymeleaf:
     encoding: UTF-8
     prefix:
       classpath: /templates/
 
 sender:
-  email: ucfsgreenapex@gmail.com
-  password: abcd1234@@
-
+  email: applicationgreenapex@gmail.com
+  password: abcdefgh12345678@@
 twilio:
-  account_sid: AC7ebcaaf3cd3f3c5882dbaaae75592f28
-  auth_token: d8d4d8b8ed246a83ce00b97d917bc5a9
-  path_service_sid: VAe27736a1fd653f112159a6f65cc18232
-  
-
+  account_sid: AC7180f49b7e4d33c10e1c05c4a90aaad1
+  auth_token: e6b9de02d2716a8e08c4eeece26b298f
+  path_service_sid: VAc248f422c8f5ad04ef23c1d12c9f5e97

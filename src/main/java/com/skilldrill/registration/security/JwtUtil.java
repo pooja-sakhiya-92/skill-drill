@@ -14,7 +14,7 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
-    private final String secret = "xadmin";
+    private static final String secret = "xadmin";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -40,7 +40,7 @@ public class JwtUtil {
 
     // this method is for generating token. as argument is username. so as user first time send request with usernamr and password
     // so here we will fetch the username , so based on that username we are going to create one token
-    public String generateToken(String username) {
+    public static String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
     }
@@ -48,7 +48,7 @@ public class JwtUtil {
     // in this method createToken subject argument is username
     // here we are setting the time for 10 hours to expire the token. 
     // and you can see we are using HS256 algorithmn
-    private String createToken(Map<String, Object> claims, String subject) {
+    private static String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 600000000))
