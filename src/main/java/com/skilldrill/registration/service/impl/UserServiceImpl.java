@@ -9,6 +9,7 @@ import com.skilldrill.registration.enums.Roles;
 import com.skilldrill.registration.exceptions.InvalidRequestException;
 import com.skilldrill.registration.exceptions.NotFoundException;
 import com.skilldrill.registration.mapper.UserMapper;
+import com.skilldrill.registration.mapper.UserMapperImpl;
 import com.skilldrill.registration.model.User;
 import com.skilldrill.registration.repository.UserRepository;
 import com.skilldrill.registration.service.UserService;
@@ -32,8 +33,8 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserMapper userMapper;
+
+    private final UserMapper userMapper = new UserMapperImpl();
 
     @Autowired
     private UserRepository userRepository;
@@ -41,11 +42,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MessageSource messageSource;
 
-    @Autowired
-    private MiniToolkit miniToolkit;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private MiniToolkit miniToolkit = new MiniToolkit();
+
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Value("${sender.email}")
     private String SENDER_EMAIL;
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto user(Authentication principal) {
+    public UserDto googleLogin(Authentication principal) {
         User user = new User();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
@@ -141,7 +142,7 @@ public class UserServiceImpl implements UserService {
         User userFromDb = userRepository.findByEmail(authentication.getUsername())
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
-        if (userFromDb.getUpdateFlag()) {
+        if (Boolean.TRUE.equals(userFromDb.getUpdateFlag())) {
             userFromDb.setTechnicalDetails(user.getTechnicalDetails());
             userFromDb.setUpdateFlag(false);
             userRepository.save(userFromDb);
@@ -157,7 +158,7 @@ public class UserServiceImpl implements UserService {
         User userFromDb = userRepository.findByEmail(authentication.getUsername())
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
-        if (userFromDb.getUpdateFlag()) {
+        if (Boolean.TRUE.equals(userFromDb.getUpdateFlag())) {
             HelperFunctions.updateBasicFields(userFromDb, user);
             userFromDb.setUpdateFlag(false);
             userRepository.save(userFromDb);

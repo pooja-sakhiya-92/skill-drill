@@ -12,7 +12,7 @@ public class HelperFunctions {
     }
 
     public static String getAccountStatus(User userFromDb) {
-        if (userFromDb.getActive())
+        if (Boolean.TRUE.equals(userFromDb.getActive()))
             return "Active";
         else
             return "Inactive";

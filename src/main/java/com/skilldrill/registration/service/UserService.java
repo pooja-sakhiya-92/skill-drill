@@ -13,7 +13,7 @@ public interface UserService {
 
     UserDto registerUser(UserDto userDto);
 
-    UserDto user(Authentication principal);
+    UserDto googleLogin(Authentication principal);
 
     UserDto updateUserDetails(UserDto userDetails);
 

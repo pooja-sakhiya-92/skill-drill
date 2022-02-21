@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.lang.Nullable;
 
 @Data
 @Document(value = "user")
@@ -32,13 +33,17 @@ public class User {
 
     private Roles role;
 
+    @Nullable
     @Field(name = "technical_details")
     private TechnicalDetails technicalDetails;
 
+    @Nullable
     private Boolean active;
 
+    @Nullable
     private Integer otp;
 
+    @Nullable
     @Field(name = "update_flag")
     private Boolean updateFlag;
 

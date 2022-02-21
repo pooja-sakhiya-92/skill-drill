@@ -2,6 +2,7 @@ package com.skilldrill.registration.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.lang.Nullable;
 
 @Data
 @AllArgsConstructor
@@ -25,12 +26,14 @@ public class UserDto {
 
     private String role;
 
+    @Nullable
     private TechnicalDetailsDto technicalDetails;
 
+    @Nullable
     private Boolean active;
-
+    @Nullable
     private Integer otp;
-
+    @Nullable
     private Boolean updateFlag;
 
     public UserDto() {

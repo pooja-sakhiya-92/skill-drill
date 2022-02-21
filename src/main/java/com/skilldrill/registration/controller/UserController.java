@@ -103,12 +103,15 @@ public class UserController {
 
     @GetMapping("google-login")
     public ResponseEntity<?> loginUsingGoogle(Authentication principal) {
-        return ResponseEntity.ok().body(userService.user(principal));
+        return ResponseEntity.ok().body(userService.googleLogin(principal));
     }
 
     @PutMapping("add/user-details")
     public ResponseEntity<?> addUserDetails(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok().body(userService.updateUserDetails(userDto));
+        UserDto responseBody = userService.updateUserDetails(userDto);
+        return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
+                messageSource.getMessage("technical-details.registration.successful",
+                        null,MessageSourceAlternateResource.TECHNICAL_DETAILS_UPDATE_SUCCESSFUL,Locale.ENGLISH),responseBody));
     }
 
 
