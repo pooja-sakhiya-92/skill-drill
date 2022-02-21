@@ -1,19 +1,22 @@
 package com.skilldrill.registration.utilities.misc;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @JsonIgnoreProperties
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseStructure<O> {
 
     private Integer code;
     private String msg;
     private O data;
-    private List<String> errors;
+    private Map<String,String> errors;
     private Date date;
     private String description;
 
@@ -32,7 +35,7 @@ public class ResponseStructure<O> {
         return rs;
     }
 
-    public static ResponseStructure<Void> createResponse(Integer code, String msg, List<String> errors) {
+    public static ResponseStructure<Void> createResponse(Integer code, String msg, Map<String,String > errors) {
         ResponseStructure<Void> rs = new ResponseStructure<>();
         rs.code = code;
         rs.msg = msg;

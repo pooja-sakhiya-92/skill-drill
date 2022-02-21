@@ -32,4 +32,8 @@ public class UserDto {
     private Integer otp;
 
     private Boolean updateFlag;
+
+    public UserDto() {
+
+    }
 }

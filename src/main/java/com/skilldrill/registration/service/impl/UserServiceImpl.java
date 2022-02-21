@@ -95,12 +95,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUserDetails(UserDto userDetails) {
         User user = userRepository.findByEmail(userDetails.getEmail())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
+                        null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
         user.setPosition(userDetails.getPosition());
         user.setDepartment(Department.valueOf(userDetails.getDepartment()));
         user.setPhone(userDetails.getPhone());
-        user.setActive(true);
-        user.setUpdateFlag(true);
+        user.setUpdateFlag(false);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return userMapper.toDto(user);

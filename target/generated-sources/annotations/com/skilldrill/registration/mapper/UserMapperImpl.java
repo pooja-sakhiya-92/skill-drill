@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-17T12:18:17+0530",
+    date = "2022-02-18T19:00:56+0530",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 1.8.0_312 (Private Build)"
 )
 @Component
@@ -25,39 +25,25 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        String id = null;
-        String firstName = null;
-        String lastName = null;
-        String email = null;
-        Long phone = null;
-        String password = null;
-        String position = null;
-        String department = null;
-        String role = null;
-        TechnicalDetailsDto technicalDetails = null;
-        Boolean active = null;
-        Integer otp = null;
-        Boolean updateFlag = null;
+        UserDto userDto = new UserDto();
 
-        id = user.getId();
-        firstName = user.getFirstName();
-        lastName = user.getLastName();
-        email = user.getEmail();
-        phone = user.getPhone();
-        password = user.getPassword();
-        position = user.getPosition();
+        userDto.setId( user.getId() );
+        userDto.setFirstName( user.getFirstName() );
+        userDto.setLastName( user.getLastName() );
+        userDto.setEmail( user.getEmail() );
+        userDto.setPhone( user.getPhone() );
+        userDto.setPassword( user.getPassword() );
+        userDto.setPosition( user.getPosition() );
         if ( user.getDepartment() != null ) {
-            department = user.getDepartment().name();
+            userDto.setDepartment( user.getDepartment().name() );
         }
         if ( user.getRole() != null ) {
-            role = user.getRole().name();
+            userDto.setRole( user.getRole().name() );
         }
-        technicalDetails = technicalDetailsToTechnicalDetailsDto( user.getTechnicalDetails() );
-        active = user.getActive();
-        otp = user.getOtp();
-        updateFlag = user.getUpdateFlag();
-
-        UserDto userDto = new UserDto( id, firstName, lastName, email, phone, password, position, department, role, technicalDetails, active, otp, updateFlag );
+        userDto.setTechnicalDetails( technicalDetailsToTechnicalDetailsDto( user.getTechnicalDetails() ) );
+        userDto.setActive( user.getActive() );
+        userDto.setOtp( user.getOtp() );
+        userDto.setUpdateFlag( user.getUpdateFlag() );
 
         return userDto;
     }

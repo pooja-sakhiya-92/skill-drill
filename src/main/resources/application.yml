@@ -26,7 +26,10 @@ server:
 sender:
   email: applicationgreenapex@gmail.com
   password: abcdefgh12345678@@
+
 twilio:
   account_sid: AC7180f49b7e4d33c10e1c05c4a90aaad1
-  auth_token: e6b9de02d2716a8e08c4eeece26b298f
+  auth_token:
   path_service_sid: VAc248f422c8f5ad04ef23c1d12c9f5e97
+
+

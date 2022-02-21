@@ -18,45 +18,45 @@ public class UserValidations {
     @Autowired
     private MessageSource messageSource;
 
-    public List<String> validate(UserDto userDto) {
-        List<String> errors = new ArrayList<>();
+    public Map<String,String > validate(UserDto userDto) {
+        Map<String,String> mappedError = new HashMap<>();
         if (isEmpty(userDto)) {
-            errors.add(messageSource.getMessage("validation.user.body.failed",
+            mappedError.put("User Body",messageSource.getMessage("validation.user.body.failed",
                     null, MessageSourceAlternateResource.VALIDATION_USER_BODY_FAILED, Locale.ENGLISH));
         }
         if (!userDto.getPassword().matches(ValidationConstants.PASSWORD_CONDITION)) {
-            errors.add(messageSource.getMessage("validation.user.password.failed",
+            mappedError.put("password", messageSource.getMessage("validation.user.password.failed",
                     null, MessageSourceAlternateResource.VALIDATION_USER_PASSWORD_FAILED, Locale.ENGLISH));
         }
         if (String.valueOf(userDto.getPhone()).matches(ValidationConstants.PHONE_CONDITION)) {
-            errors.add(messageSource.getMessage("validation.user.phone.failed",
+            mappedError.put("phone",messageSource.getMessage("validation.user.phone.failed",
                     null, MessageSourceAlternateResource.VALIDATION_USER_PHONE_FAILED, Locale.ENGLISH));
         }
         if (!userDto.getFirstName().matches(ValidationConstants.USERNAME_CONDITION)) {
-            errors.add(messageSource.getMessage("validation.first.name.failed",
+            mappedError.put("firstName",messageSource.getMessage("validation.first.name.failed",
                     null, MessageSourceAlternateResource.VALIDATION_USER_NAME_FAILED, Locale.ENGLISH));
         }
         if (!userDto.getLastName().matches(ValidationConstants.USERNAME_CONDITION)) {
-            errors.add(messageSource.getMessage("validation.last.name.failed",
+            mappedError.put("lastName",messageSource.getMessage("validation.last.name.failed",
                     null, MessageSourceAlternateResource.VALIDATION_USER_NAME_FAILED, Locale.ENGLISH));
         }
         if (!userDto.getPosition().matches(ValidationConstants.NOT_BLANK)) {
-            errors.add(messageSource.getMessage("validation.user.position.failed",
+            mappedError.put("position",messageSource.getMessage("validation.user.position.failed",
                     null, MessageSourceAlternateResource.VALIDATION_POSITION_FAILED, Locale.ENGLISH));
         }
         if (!userDto.getRole().matches(ValidationConstants.USERTYPE_CONDITION)) {
-            errors.add(messageSource.getMessage("validation.user.type.failed",
+            mappedError.put("role",messageSource.getMessage("validation.user.type.failed",
                     null, MessageSourceAlternateResource.VALIDATION_USER_TYPE_FAILED, Locale.ENGLISH));
         }
         if (!userDto.getDepartment().matches(ValidationConstants.DEPARTMENT_CONDITION)) {
-            errors.add(messageSource.getMessage("validation.user.department.failed",
+            mappedError.put("department",messageSource.getMessage("validation.user.department.failed",
                     null, MessageSourceAlternateResource.VALIDATION_DEPARTMENT_FAILED, Locale.ENGLISH));
         }
         if (!EmailValidator.getInstance().isValid(userDto.getEmail())) {
-            errors.add(messageSource.getMessage("validation.user.email.failed",
+            mappedError.put("email",messageSource.getMessage("validation.user.email.failed",
                     null, MessageSourceAlternateResource.VALIDATION_USER_EMAIL_FAILED, Locale.ENGLISH));
         }
-        return isEmpty(errors) ? Collections.emptyList() : errors;
+        return isEmpty(mappedError) ? Collections.emptyMap() : mappedError;
     }
 
     public List<String> validateTechnicalDetails(TechnicalDetailsDto technicalDetailsDto) {

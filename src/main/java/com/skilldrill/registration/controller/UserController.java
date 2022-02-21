@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -57,7 +56,7 @@ public class UserController {
 
     @PostMapping("registration")
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
-        List<String> errors = userValidations.validate(userDto);
+        Map<String, String> errors = userValidations.validate(userDto);
         if (!isEmpty(errors)) {
             ResponseStructure<Void> response = ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST, messageSource.getMessage("user.registration.failed",
                     null, MessageSourceAlternateResource.USER_REGISTRATION_FAILED, Locale.ENGLISH));
@@ -87,11 +86,13 @@ public class UserController {
     @PutMapping("update/technical-details")
     public ResponseEntity<?> updateTechnicalDetails(@RequestBody UserDto userDto) {
         List<String> errors = userValidations.validateTechnicalDetails(userDto.getTechnicalDetails());
+        Map<String,String> mappedError = new HashMap<>();
         if (!isEmpty(errors)) {
             ResponseStructure<Void> response = ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST,
                     messageSource.getMessage("technical-details_update_failed",
                             null, MessageSourceAlternateResource.TECHNICAL_DETAILS_UPDATE_FAILED, Locale.ENGLISH));
-            response.setErrors(errors);
+            mappedError.put("technicalDetails",errors.toString());
+            response.setErrors(mappedError);
             return ResponseEntity.badRequest().body(response);
         }
         UserDto responseBody = userService.updateTechnicalDetails(userDto);
@@ -113,7 +114,7 @@ public class UserController {
 
     @PutMapping("update/basic-details")
     public ResponseEntity<?> updateBasicDetails(@RequestBody UserDto userDto) {
-        List<String> errors = userValidations.validate(userDto);
+        Map<String, String> errors = userValidations.validate(userDto);
         if (!isEmpty(errors)) {
             ResponseStructure<Void> response = ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST,
                     messageSource.getMessage("technical-details_update_failed",
