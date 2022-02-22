@@ -93,6 +93,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(generatedPassword));
         user.setRole(Roles.ROLE_GENERAL);
         user.setActive(true);
+        user.setUpdateFlag(false);
         userRepository.save(user);
         System.out.println(principal.getPrincipal());
         return userMapper.toDto(user);
