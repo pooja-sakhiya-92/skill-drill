@@ -110,8 +110,8 @@ public class UserController {
     public ResponseEntity<?> addUserDetails(@RequestBody UserDto userDto) {
         UserDto responseBody = userService.updateUserDetails(userDto);
         return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
-                messageSource.getMessage("technical-details.registration.successful",
-                        null,MessageSourceAlternateResource.TECHNICAL_DETAILS_UPDATE_SUCCESSFUL,Locale.ENGLISH),responseBody));
+                messageSource.getMessage("user-details.added.successful",
+                        null,MessageSourceAlternateResource.USER_DETAILS_ADDED_SUCCESSFUL,Locale.ENGLISH),responseBody));
     }
 
 
@@ -120,15 +120,15 @@ public class UserController {
         Map<String, String> errors = userValidations.validate(userDto);
         if (!isEmpty(errors)) {
             ResponseStructure<Void> response = ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST,
-                    messageSource.getMessage("technical-details_update_failed",
-                            null, MessageSourceAlternateResource.TECHNICAL_DETAILS_UPDATE_FAILED, Locale.ENGLISH));
+                    messageSource.getMessage("basic-details_update_failed",
+                            null, MessageSourceAlternateResource.BASIC_DETAILS_UPDATE_FAILED, Locale.ENGLISH));
             response.setErrors(errors);
             return ResponseEntity.badRequest().body(response);
         }
         UserDto responseBody = userService.updateBasicDetails(userDto);
         return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
-                messageSource.getMessage("technical-details.registration.successful",
-                        null, MessageSourceAlternateResource.TECHNICAL_DETAILS_UPDATE_SUCCESSFUL, Locale.ENGLISH), responseBody));
+                messageSource.getMessage("basic-details_update_successful",
+                        null, MessageSourceAlternateResource.BASIC_DETAILS_UPDATE_SUCCESSFUL, Locale.ENGLISH), responseBody));
     }
 
 }

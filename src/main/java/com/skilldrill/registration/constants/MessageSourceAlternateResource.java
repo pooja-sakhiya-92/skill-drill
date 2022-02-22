@@ -30,6 +30,9 @@ public class MessageSourceAlternateResource {
     public static final String PASSWORD_VERIFICATION_SUCCESSFUL = "Password verified successfully";
     public static final String EMAIL_VERIFICATION_SUCCESSFUL = "Email verification successful";
 
+    public static final String USER_DETAILS_ADDED_SUCCESSFUL = "User details added successful";
+    public static final String BASIC_DETAILS_UPDATE_FAILED = "Basic details Update failed";
+    public static final String BASIC_DETAILS_UPDATE_SUCCESSFUL = "Basic details update successful";
 
     //EMAIL EXCEPTIONS
     public static final String MANDATORY_FIELDS_EMPTY = "Mandatory fields are empty cannot continue";

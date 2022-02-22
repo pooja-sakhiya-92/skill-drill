@@ -33,8 +33,8 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-
-    private final UserMapper userMapper = new UserMapperImpl();
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private UserRepository userRepository;
@@ -42,11 +42,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MessageSource messageSource;
 
+    @Autowired
+    private MiniToolkit miniToolkit;
 
-    private MiniToolkit miniToolkit = new MiniToolkit();
-
-
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${sender.email}")
     private String SENDER_EMAIL;
