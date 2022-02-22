@@ -1,9 +1,23 @@
 package com.skilldrill.registration.utilities.misc;
 
+import com.skilldrill.registration.dto.UserDto;
 import com.skilldrill.registration.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HelperFunctions {
-    public static void updateBasicFields(User userFromDb, User user) {
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public static Boolean checkUpdateFlag(UserDto userDto) {
+        return userDto.getUpdateFlag();
+
+    }
+
+    public void updateBasicFields(User userFromDb, User user) {
         userFromDb.setFirstName(user.getFirstName());
         userFromDb.setLastName(user.getLastName());
         userFromDb.setPhone(user.getPhone());
@@ -11,10 +25,14 @@ public class HelperFunctions {
         userFromDb.setDepartment(user.getDepartment());
     }
 
-    public static String getAccountStatus(User userFromDb) {
+    public String getAccountStatus(User userFromDb) {
         if (Boolean.TRUE.equals(userFromDb.getActive()))
             return "Active";
         else
             return "Inactive";
+    }
+
+    public Boolean checkPassword(String password, String actualPassword) {
+        return bCryptPasswordEncoder.matches(password, actualPassword);
     }
 }

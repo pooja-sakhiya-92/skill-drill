@@ -1,13 +1,11 @@
 package com.skilldrill.registration.service;
 
 import com.skilldrill.registration.dto.UserDto;
-import com.skilldrill.registration.model.User;
+import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-
 
 public interface UserService {
 
@@ -19,10 +17,11 @@ public interface UserService {
 
     UserDto verifyEmail(String email, String otp) throws MessagingException, IOException;
 
-    UserDto setUpdateFlag();
+    UserDto setUpdateFlag(String password);
 
     UserDto updateTechnicalDetails(UserDto userDto);
 
     UserDto updateBasicDetails(UserDto userDto);
 
+    Boolean checkIfUserExists(String email);
 }

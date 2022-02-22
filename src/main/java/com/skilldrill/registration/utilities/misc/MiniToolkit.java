@@ -30,7 +30,7 @@ public class MiniToolkit {
 
     @Autowired
     private SpringTemplateEngine templateEngine;
-    
+
     @Value("${twilio.account_sid}")
     private String ACCOUNT_SID;
 
@@ -78,4 +78,3 @@ public class MiniToolkit {
         return verificationCheck.getStatus().equals("approved");
     }
 }
-

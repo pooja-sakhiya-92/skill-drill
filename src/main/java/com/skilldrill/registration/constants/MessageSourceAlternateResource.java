@@ -23,7 +23,7 @@ public class MessageSourceAlternateResource {
     public static final String USER_REGISTRATION_SUCCESSFUL = "User registration successful";
     public static final String USER_ALREADY_REGISTERED = "User already registered. please login to access your account.";
     public static final String USER_NOT_FOUND = "User not found";
-    public static final String USER_LOGIN_FAILED = "Login failed";
+    public static final String USER_LOGIN_FAILED = "Invalid Username or Password/User disabled";
     public static final String USER_LOGIN_SUCCESSFUL = "Login successful";
     public static final String TECHNICAL_DETAILS_UPDATE_FAILED = "Technical details update failed";
     public static final String TECHNICAL_DETAILS_UPDATE_SUCCESSFUL = "Technical details update successful";
@@ -37,4 +37,6 @@ public class MessageSourceAlternateResource {
     //EMAIL EXCEPTIONS
     public static final String MANDATORY_FIELDS_EMPTY = "Mandatory fields are empty cannot continue";
     public static final String EMPTY_RECIPIENT_EMAIL = "Recipient email empty cannot proceed";
+    public static final String INVALID_USER_PASSWORD = "Invalid Password entered.";
+    public static final String UPDATEFLAG_ALREADY_SET = "Update Flag already set";
 }

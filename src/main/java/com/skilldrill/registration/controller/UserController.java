@@ -5,9 +5,11 @@ import com.skilldrill.registration.dto.UserDto;
 import com.skilldrill.registration.model.AuthRequest;
 import com.skilldrill.registration.security.JwtUtil;
 import com.skilldrill.registration.service.UserService;
+import com.skilldrill.registration.utilities.misc.HelperFunctions;
 import com.skilldrill.registration.utilities.misc.ResponseStructure;
 import com.skilldrill.registration.utilities.validations.UserValidations;
 import org.apache.http.HttpStatus;
+import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -43,13 +48,16 @@ public class UserController {
 
     @PostMapping("login")
     public ResponseEntity<?> generateToken(@RequestBody AuthRequest authRequest) {
+        if (!userService.checkIfUserExists(authRequest.getUserName())) {
+            return ResponseEntity.status(404).body(ResponseStructure.createResponse(HttpStatus.SC_NOT_FOUND, messageSource.getMessage("user.not.found", null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
+        }
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST, messageSource.getMessage("user.login.failed",
                     null, MessageSourceAlternateResource.USER_LOGIN_FAILED, Locale.ENGLISH)));
         }
-        String response = jwtUtil.generateToken(authRequest.getUserName());
+        String response = JwtUtil.generateToken(authRequest.getUserName());
         return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK, messageSource.getMessage("user.login.successful",
                 null, MessageSourceAlternateResource.USER_LOGIN_SUCCESSFUL, Locale.ENGLISH), response));
     }
@@ -76,8 +84,16 @@ public class UserController {
     }
 
     @PutMapping("verify/password")
-    public ResponseEntity<?> setUpdateFlag() {
-        UserDto responseBody = userService.setUpdateFlag();
+    public ResponseEntity<?> setUpdateFlag(@RequestParam String password) {
+        UserDto responseBody = userService.setUpdateFlag(password);
+        if (responseBody == null) {
+            return ResponseEntity.badRequest().body(ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST,
+                    messageSource.getMessage("updateflag.already.set", null, MessageSourceAlternateResource.UPDATEFLAG_ALREADY_SET, Locale.ENGLISH)));
+        }
+        if (!HelperFunctions.checkUpdateFlag(responseBody)) {
+            return ResponseEntity.status(401).body(ResponseStructure.createResponse(HttpStatus.SC_UNAUTHORIZED,
+                    messageSource.getMessage("invalid.user.password", null, MessageSourceAlternateResource.INVALID_USER_PASSWORD, Locale.ENGLISH)));
+        }
         return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
                 messageSource.getMessage("password.verified.successfully",
                         null, MessageSourceAlternateResource.PASSWORD_VERIFICATION_SUCCESSFUL, Locale.ENGLISH), responseBody));
@@ -86,12 +102,12 @@ public class UserController {
     @PutMapping("update/technical-details")
     public ResponseEntity<?> updateTechnicalDetails(@RequestBody UserDto userDto) {
         List<String> errors = userValidations.validateTechnicalDetails(userDto.getTechnicalDetails());
-        Map<String,String> mappedError = new HashMap<>();
+        Map<String, String> mappedError = new HashMap<>();
         if (!isEmpty(errors)) {
             ResponseStructure<Void> response = ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST,
                     messageSource.getMessage("technical-details_update_failed",
                             null, MessageSourceAlternateResource.TECHNICAL_DETAILS_UPDATE_FAILED, Locale.ENGLISH));
-            mappedError.put("technicalDetails",errors.toString());
+            mappedError.put("technicalDetails", errors.toString());
             response.setErrors(mappedError);
             return ResponseEntity.badRequest().body(response);
         }
@@ -111,7 +127,7 @@ public class UserController {
         UserDto responseBody = userService.updateUserDetails(userDto);
         return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
                 messageSource.getMessage("user-details.added.successful",
-                        null,MessageSourceAlternateResource.USER_DETAILS_ADDED_SUCCESSFUL,Locale.ENGLISH),responseBody));
+                        null, MessageSourceAlternateResource.USER_DETAILS_ADDED_SUCCESSFUL, Locale.ENGLISH), responseBody));
     }
 
 

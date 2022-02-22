@@ -9,13 +9,13 @@ import com.skilldrill.registration.enums.Roles;
 import com.skilldrill.registration.exceptions.InvalidRequestException;
 import com.skilldrill.registration.exceptions.NotFoundException;
 import com.skilldrill.registration.mapper.UserMapper;
-import com.skilldrill.registration.mapper.UserMapperImpl;
 import com.skilldrill.registration.model.User;
 import com.skilldrill.registration.repository.UserRepository;
 import com.skilldrill.registration.service.UserService;
 import com.skilldrill.registration.utilities.misc.HelperFunctions;
 import com.skilldrill.registration.utilities.misc.MiniToolkit;
 import com.skilldrill.registration.utilities.misc.NanoToolkit;
+import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -35,6 +35,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    //    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+//        this.userRepository = userRepository;
+//        this.userMapper = userMapper;
+//    }
+    @Autowired
+    private HelperFunctions helperFunctions;
 
     @Autowired
     private UserRepository userRepository;
@@ -65,7 +72,6 @@ public class UserServiceImpl implements UserService {
             user.setActive(false);
             user.setUpdateFlag(false);
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            user.setOtp(Integer.valueOf(NanoToolkit.randomOtpGenerator()));
             userRepository.save(user);
             user.setPassword(null);
             miniToolkit.sendEmailVerificationOTP(user.getEmail());
@@ -116,7 +122,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userFromDb);
         try {
             miniToolkit.sendAcknowledgement(new UserInfoDto(userFromDb.getFirstName(),
-                    HelperFunctions.getAccountStatus(userFromDb), userFromDb.getEmail()));
+                    helperFunctions.getAccountStatus(userFromDb), userFromDb.getEmail()));
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
@@ -124,15 +130,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto setUpdateFlag() {
+    public UserDto setUpdateFlag(String password) {
         UserDetails authentication = NanoToolkit.getCurrentUserDetails();
         User userFromDb = userRepository.findByEmail(authentication.getUsername())
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
-        userFromDb.setUpdateFlag(true);
-        userRepository.save(userFromDb);
-        userFromDb.setPassword(null);
-        return userMapper.toDto(userFromDb);
+        if (!userFromDb.getUpdateFlag()) {
+            if (helperFunctions.checkPassword(password, userFromDb.getPassword())) {
+                userFromDb.setUpdateFlag(true);
+                userRepository.save(userFromDb);
+            }
+            userFromDb.setPassword(null);
+            return userMapper.toDto(userFromDb);
+        }
+        return null;
     }
 
     @Override
@@ -159,11 +170,16 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
         if (Boolean.TRUE.equals(userFromDb.getUpdateFlag())) {
-            HelperFunctions.updateBasicFields(userFromDb, user);
+            helperFunctions.updateBasicFields(userFromDb, user);
             userFromDb.setUpdateFlag(false);
             userRepository.save(userFromDb);
         }
         userFromDb.setPassword(null);
         return userMapper.toDto(userFromDb);
+    }
+
+    @Override
+    public Boolean checkIfUserExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 }

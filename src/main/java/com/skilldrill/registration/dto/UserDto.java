@@ -39,4 +39,17 @@ public class UserDto {
     public UserDto() {
 
     }
+
+    public UserDto(String id, String firstName, String lastName, String email, long phone, String password, String position, String department, String role, Boolean active) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.position = position;
+        this.department = department;
+        this.role = role;
+        this.active = active;
+    }
 }
