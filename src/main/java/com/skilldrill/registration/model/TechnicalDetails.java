@@ -1,11 +1,13 @@
 package com.skilldrill.registration.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class TechnicalDetails {
 
     @Field(value = "linkedin_link")

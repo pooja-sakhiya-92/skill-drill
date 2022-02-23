@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-02-22T13:47:51+0530",
+    date = "2022-02-23T13:45:54+0530",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 1.8.0_192 (Oracle Corporation)"
 )
 @Component
@@ -83,16 +83,22 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        TechnicalDetails technicalDetails = new TechnicalDetails();
+        String linkedinLink = null;
+        String resumeLink = null;
+        List<String> tags = null;
+        String education = null;
+        String interestArea = null;
 
-        technicalDetails.setLinkedinLink( technicalDetailsDto.getLinkedinLink() );
-        technicalDetails.setResumeLink( technicalDetailsDto.getResumeLink() );
+        linkedinLink = technicalDetailsDto.getLinkedinLink();
+        resumeLink = technicalDetailsDto.getResumeLink();
         List<String> list = technicalDetailsDto.getTags();
         if ( list != null ) {
-            technicalDetails.setTags( new ArrayList<String>( list ) );
+            tags = new ArrayList<String>( list );
         }
-        technicalDetails.setEducation( technicalDetailsDto.getEducation() );
-        technicalDetails.setInterestArea( technicalDetailsDto.getInterestArea() );
+        education = technicalDetailsDto.getEducation();
+        interestArea = technicalDetailsDto.getInterestArea();
+
+        TechnicalDetails technicalDetails = new TechnicalDetails( linkedinLink, resumeLink, tags, education, interestArea );
 
         return technicalDetails;
     }

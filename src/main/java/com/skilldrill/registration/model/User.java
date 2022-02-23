@@ -36,7 +36,7 @@ public class User {
 
     private Roles role;
 
-    
+
     @Field(name = "technical_details")
     private TechnicalDetails technicalDetails;
 
@@ -49,7 +49,7 @@ public class User {
     @Field(name = "update_flag")
     private Boolean updateFlag;
 
-    public User(String id, String firstName, String lastName, String email, long phone, String password, String position, Department department, Roles role, Boolean active) {
+    public User(String id, String firstName, String lastName, String email, long phone, String password, String position, Department department, Roles role, Boolean active, Boolean updateFlag) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -60,5 +60,6 @@ public class User {
         this.department = department;
         this.role = role;
         this.active = active;
+        this.updateFlag = updateFlag;
     }
 }

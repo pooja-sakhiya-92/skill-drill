@@ -15,7 +15,6 @@ import com.skilldrill.registration.service.UserService;
 import com.skilldrill.registration.utilities.misc.HelperFunctions;
 import com.skilldrill.registration.utilities.misc.MiniToolkit;
 import com.skilldrill.registration.utilities.misc.NanoToolkit;
-import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -36,10 +35,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    //    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-//        this.userRepository = userRepository;
-//        this.userMapper = userMapper;
-//    }
     @Autowired
     private HelperFunctions helperFunctions;
 
@@ -53,6 +48,9 @@ public class UserServiceImpl implements UserService {
     private MiniToolkit miniToolkit;
 
     @Autowired
+    private NanoToolkit nanoToolkit;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${sender.email}")
@@ -64,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto registerUser(UserDto userDto) {
         User user = userMapper.toUser(userDto);
-        boolean userExists = userRepository.findByEmail(user.getEmail()).isPresent();
+        boolean userExists = userRepository.existsByEmail(user.getEmail());
         if (userExists) {
             throw new InvalidRequestException(messageSource.getMessage("user.already.registered",
                     null, MessageSourceAlternateResource.USER_ALREADY_REGISTERED, Locale.ENGLISH));
@@ -95,7 +93,6 @@ public class UserServiceImpl implements UserService {
         user.setActive(true);
         user.setUpdateFlag(false);
         userRepository.save(user);
-        System.out.println(principal.getPrincipal());
         return userMapper.toDto(user);
     }
 
@@ -111,6 +108,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdateFlag(false);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        user.setPassword(null);
         return userMapper.toDto(user);
     }
 
@@ -132,7 +130,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto setUpdateFlag(String password) {
-        UserDetails authentication = NanoToolkit.getCurrentUserDetails();
+        UserDetails authentication = nanoToolkit.getCurrentUserDetails();
         User userFromDb = userRepository.findByEmail(authentication.getUsername())
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
@@ -150,7 +148,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateTechnicalDetails(UserDto userDto) {
         User user = userMapper.toUser(userDto);
-        UserDetails authentication = NanoToolkit.getCurrentUserDetails();
+        UserDetails authentication = nanoToolkit.getCurrentUserDetails();
         User userFromDb = userRepository.findByEmail(authentication.getUsername())
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
@@ -166,7 +164,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateBasicDetails(UserDto userDto) {
         User user = userMapper.toUser(userDto);
-        UserDetails authentication = NanoToolkit.getCurrentUserDetails();
+        UserDetails authentication = nanoToolkit.getCurrentUserDetails();
         User userFromDb = userRepository.findByEmail(authentication.getUsername())
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));

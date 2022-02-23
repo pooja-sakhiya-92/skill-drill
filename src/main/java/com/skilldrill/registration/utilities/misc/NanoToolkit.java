@@ -5,7 +5,9 @@ package com.skilldrill.registration.utilities.misc;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NanoToolkit {
 
     public static String randomOtpGenerator() {
@@ -16,7 +18,7 @@ public class NanoToolkit {
         return SecurityConstants.paths.get(index).toArray(new String[0]);
     }*/
 
-    public static UserDetails getCurrentUserDetails() {
+    public UserDetails getCurrentUserDetails() {
         return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
