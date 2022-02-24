@@ -3,6 +3,7 @@ package com.skilldrill.registration.utilities.misc;
 import com.skilldrill.registration.constants.AllPurposeConstants;
 import com.skilldrill.registration.dto.UserInfoDto;
 import com.twilio.Twilio;
+import com.twilio.exception.ApiException;
 import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class MiniToolkit {
         System.out.println(verification.getSid());
     }
 
-    public Boolean verifyEmailOTP(String recipientEmail, String userOtp) {
+    public Boolean verifyEmailOTP(String recipientEmail, String userOtp) throws ApiException {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         VerificationCheck verificationCheck = VerificationCheck.creator(
                         PATH_SERVICE_SID,

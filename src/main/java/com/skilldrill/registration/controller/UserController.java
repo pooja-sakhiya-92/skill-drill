@@ -8,8 +8,8 @@ import com.skilldrill.registration.service.UserService;
 import com.skilldrill.registration.utilities.misc.HelperFunctions;
 import com.skilldrill.registration.utilities.misc.ResponseStructure;
 import com.skilldrill.registration.utilities.validations.UserValidations;
+import com.twilio.exception.ApiException;
 import org.apache.http.HttpStatus;
-import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
@@ -46,41 +46,68 @@ public class UserController {
     @Autowired
     private UserValidations userValidations;
 
+    @Autowired
+    private HelperFunctions helperFunctions;
+
     @PostMapping("login")
     public ResponseEntity<?> generateToken(@RequestBody AuthRequest authRequest) {
-        if (!userService.checkIfUserExists(authRequest.getUserName())) {
-            return ResponseEntity.status(404).body(ResponseStructure.createResponse(HttpStatus.SC_NOT_FOUND, messageSource.getMessage("user.not.found", null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
+        if (!helperFunctions.checkIfUserExists(authRequest.getUserName())) {
+            return ResponseEntity.status(404).body(ResponseStructure.createResponse(HttpStatus.SC_NOT_FOUND,
+                    messageSource.getMessage("user.not.found", null, MessageSourceAlternateResource.USER_NOT_FOUND,
+                            Locale.ENGLISH)));
         }
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(),
+                    authRequest.getPassword()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST, messageSource.getMessage("user.login.failed",
-                    null, MessageSourceAlternateResource.USER_LOGIN_FAILED, Locale.ENGLISH)));
+            return ResponseEntity.badRequest().body(ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST,
+                    messageSource.getMessage("user.login.failed",
+                            null, MessageSourceAlternateResource.USER_LOGIN_FAILED, Locale.ENGLISH)));
         }
         String response = JwtUtil.generateToken(authRequest.getUserName());
-        return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK, messageSource.getMessage("user.login.successful",
-                null, MessageSourceAlternateResource.USER_LOGIN_SUCCESSFUL, Locale.ENGLISH), response));
+        return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
+                messageSource.getMessage("user.login.successful",
+                        null, MessageSourceAlternateResource.USER_LOGIN_SUCCESSFUL, Locale.ENGLISH), response));
     }
 
     @PostMapping("registration")
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
         Map<String, String> errors = userValidations.validate(userDto);
         if (!isEmpty(errors)) {
-            ResponseStructure<Void> response = ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST, messageSource.getMessage("user.registration.failed",
-                    null, MessageSourceAlternateResource.USER_REGISTRATION_FAILED, Locale.ENGLISH));
+            ResponseStructure<Void> response = ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST,
+                    messageSource.getMessage("user.registration.failed",
+                            null, MessageSourceAlternateResource.USER_REGISTRATION_FAILED, Locale.ENGLISH));
             response.setErrors(errors);
             return ResponseEntity.badRequest().body(response);
         }
         UserDto responseBody = userService.registerUser(userDto);
-        return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK, messageSource.getMessage("user.registration.successful",
-                null, MessageSourceAlternateResource.USER_LOGIN_SUCCESSFUL, Locale.ENGLISH), responseBody));
+        return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
+                messageSource.getMessage("user.registration.successful",
+                        null, MessageSourceAlternateResource.USER_LOGIN_SUCCESSFUL, Locale.ENGLISH), responseBody));
     }
 
     @PutMapping("verify/email")
     public ResponseEntity<?> verifyEmail(@RequestParam String email, @RequestParam String otp) throws MessagingException, IOException {
-        UserDto responseBody = userService.verifyEmail(email, otp);
-        return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK, messageSource.getMessage("email.verification.successful",
-                null, MessageSourceAlternateResource.EMAIL_VERIFICATION_SUCCESSFUL, Locale.ENGLISH), responseBody));
+        if (!helperFunctions.checkIfUserExists(email)) {
+            return ResponseEntity.status(404).body(ResponseStructure.createResponse(HttpStatus.SC_NOT_FOUND,
+                    messageSource.getMessage("user.not.found", null,
+                            MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
+        }
+        UserDto responseBody;
+        try {
+            responseBody = userService.verifyEmail(email, otp);
+        } catch (ApiException e) {
+            return ResponseEntity.status(500).body(ResponseStructure.createResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    messageSource.getMessage("verification.token.expired", null,
+                            MessageSourceAlternateResource.VERIFICATION_TOKEN_EXPIRED, Locale.ENGLISH)));
+        }
+        if (responseBody == null)
+            return ResponseEntity.status(406).body(ResponseStructure.createResponse(HttpStatus.SC_NOT_ACCEPTABLE,
+                    messageSource.getMessage("invalid.email.otp", null,
+                            MessageSourceAlternateResource.INVALID_EMAIL_OTP, Locale.ENGLISH)));
+        return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
+                messageSource.getMessage("email.verification.successful", null,
+                        MessageSourceAlternateResource.EMAIL_VERIFICATION_SUCCESSFUL, Locale.ENGLISH), responseBody));
     }
 
     @PutMapping("verify/password")

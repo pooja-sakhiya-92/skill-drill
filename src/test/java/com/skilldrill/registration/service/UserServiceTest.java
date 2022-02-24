@@ -72,11 +72,11 @@ public class UserServiceTest {
                 "www.resumeLink.com/akshaynavilkar", tags, "B.E", "Web Development");
 
         userWithBasicDetails = new User("abcdefgh12345678", "abc", "def",
-                "soumya.sau@green-apex.com", 9876543210L, "Abcd1234!",
+                "akshay.navilkar@green-apex.com", 9876543210L, "Abcd1234!",
                 "Manager", Department.BACKEND, Roles.ROLE_GENERAL, true, false);
 
         userWithTechnicalDetails = new User("abcdefgh12345678", "abc", "def",
-                "soumya.sau@green-apex.com", 9876543210L, "Abcd1234!",
+                "akshay.navilkar@green-apex.com", 9876543210L, "Abcd1234!",
                 "Manager", Department.BACKEND, Roles.ROLE_GENERAL, technicalDetails,
                 true, null, false);
 
@@ -114,7 +114,7 @@ public class UserServiceTest {
     public void verifyEmailTest() throws MessagingException, IOException {
         Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(Optional.of(userWithBasicDetails));
         UserDto dummyData = userMapper.toDto(userWithBasicDetails);
-        UserDto responseFromService = userService.verifyEmail(userMapper.toDto(userWithBasicDetails).getEmail(), "026871");
+        UserDto responseFromService = userService.verifyEmail(userMapper.toDto(userWithBasicDetails).getEmail(), "379115");
         assert Objects.equals(dummyData.getEmail(), responseFromService.getEmail());
         assert Objects.equals(dummyData.getFirstName(), responseFromService.getFirstName());
         assert Objects.equals(dummyData.getLastName(), responseFromService.getLastName());

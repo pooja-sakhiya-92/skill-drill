@@ -39,4 +39,6 @@ public class MessageSourceAlternateResource {
     public static final String EMPTY_RECIPIENT_EMAIL = "Recipient email empty cannot proceed";
     public static final String INVALID_USER_PASSWORD = "Invalid Password entered.";
     public static final String UPDATEFLAG_ALREADY_SET = "Update Flag already set";
+    public static final String INVALID_EMAIL_OTP = "Invalid OTP!. Verification failed";
+    public static final String VERIFICATION_TOKEN_EXPIRED = "OTP for email verification expired";
 }

@@ -15,6 +15,7 @@ import com.skilldrill.registration.service.UserService;
 import com.skilldrill.registration.utilities.misc.HelperFunctions;
 import com.skilldrill.registration.utilities.misc.MiniToolkit;
 import com.skilldrill.registration.utilities.misc.NanoToolkit;
+import com.twilio.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -113,19 +114,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto verifyEmail(String email, String otp) {
+    public UserDto verifyEmail(String email, String otp) throws ApiException {
         User userFromDb = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
         userFromDb.setActive(miniToolkit.verifyEmailOTP(userFromDb.getEmail(), otp));
         userRepository.save(userFromDb);
-        try {
-            miniToolkit.sendAcknowledgement(new UserInfoDto(userFromDb.getFirstName(),
-                    helperFunctions.getAccountStatus(userFromDb), userFromDb.getEmail()));
-        } catch (MessagingException | IOException e) {
-            e.printStackTrace();
+        if (userFromDb.getActive()) {
+            try {
+                miniToolkit.sendAcknowledgement(new UserInfoDto(userFromDb.getFirstName(),
+                        helperFunctions.getAccountStatus(userFromDb), userFromDb.getEmail()));
+            } catch (MessagingException | IOException e) {
+                e.printStackTrace();
+            }
+            return userMapper.toDto(userFromDb);
         }
-        return userMapper.toDto(userFromDb);
+        return null;
     }
 
     @Override
@@ -175,10 +179,5 @@ public class UserServiceImpl implements UserService {
         }
         userFromDb.setPassword(null);
         return userMapper.toDto(userFromDb);
-    }
-
-    @Override
-    public Boolean checkIfUserExists(String email) {
-        return userRepository.findByEmail(email).isPresent();
     }
 }

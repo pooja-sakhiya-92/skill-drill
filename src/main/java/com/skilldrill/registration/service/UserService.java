@@ -1,7 +1,6 @@
 package com.skilldrill.registration.service;
 
 import com.skilldrill.registration.dto.UserDto;
-import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import javax.mail.MessagingException;
@@ -22,6 +21,4 @@ public interface UserService {
     UserDto updateTechnicalDetails(UserDto userDto);
 
     UserDto updateBasicDetails(UserDto userDto);
-
-    Boolean checkIfUserExists(String email);
 }
