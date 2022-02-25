@@ -6,6 +6,7 @@ import com.skilldrill.registration.dto.UserDto;
 import com.skilldrill.registration.dto.UserInfoDto;
 import com.skilldrill.registration.enums.Department;
 import com.skilldrill.registration.enums.Roles;
+import com.skilldrill.registration.exceptions.ExpiredTokenException;
 import com.skilldrill.registration.exceptions.InvalidRequestException;
 import com.skilldrill.registration.exceptions.NotFoundException;
 import com.skilldrill.registration.mapper.UserMapper;
@@ -53,6 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Value("${sender.email}")
     private String SENDER_EMAIL;
@@ -114,22 +116,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto verifyEmail(String email, String otp) throws ApiException {
+    public UserDto verifyEmail(String email, String otp) {
         User userFromDb = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
-        userFromDb.setActive(miniToolkit.verifyEmailOTP(userFromDb.getEmail(), otp));
-        userRepository.save(userFromDb);
-        if (userFromDb.getActive()) {
-            try {
-                miniToolkit.sendAcknowledgement(new UserInfoDto(userFromDb.getFirstName(),
-                        helperFunctions.getAccountStatus(userFromDb), userFromDb.getEmail()));
-            } catch (MessagingException | IOException e) {
-                e.printStackTrace();
+        try {
+            userFromDb.setActive(miniToolkit.verifyEmailOTP(userFromDb.getEmail(), otp));
+            userRepository.save(userFromDb);
+            if (userFromDb.getActive()) {
+                try {
+                    miniToolkit.sendAcknowledgement(new UserInfoDto(userFromDb.getFirstName(),
+                            helperFunctions.getAccountStatus(userFromDb), userFromDb.getEmail()));
+                } catch (MessagingException | IOException e) {
+                    e.printStackTrace();
+                }
+                return userMapper.toDto(userFromDb);
             }
-            return userMapper.toDto(userFromDb);
+            return null;
+        } catch (ApiException e) {
+            throw new ExpiredTokenException(messageSource.getMessage("verification.token.expired", null,
+                    MessageSourceAlternateResource.VERIFICATION_TOKEN_EXPIRED, Locale.ENGLISH));
         }
-        return null;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.skilldrill.registration.service;
 import com.skilldrill.registration.dto.UserDto;
 import com.skilldrill.registration.enums.Department;
 import com.skilldrill.registration.enums.Roles;
+import com.skilldrill.registration.exceptions.NotFoundException;
 import com.skilldrill.registration.mapper.UserMapper;
 import com.skilldrill.registration.model.TechnicalDetails;
 import com.skilldrill.registration.model.User;
@@ -33,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -98,6 +101,17 @@ public class UserServiceTest {
         assert Objects.equals(dummyData.getEmail(), responseFromService.getEmail());
         assert Objects.equals(dummyData.getFirstName(), responseFromService.getFirstName());
         assert Objects.equals(dummyData.getLastName(), responseFromService.getLastName());
+        assertNotEquals("abc",responseFromService.getDepartment());
+        assertNotNull(responseFromService.getPosition(),responseFromService.getDepartment());
+        assertFalse(bCryptPasswordEncoder.matches("abcdff",responseFromService.getPassword()));
+    }
+
+    @Test
+    public void updateUserDetailsNegativeTest() {
+        Mockito.when(userRepository.findByEmail("soumya.sau@green-apex.com")).thenReturn(Optional.of(userWithBasicDetails));
+
+        assertThrows(NotFoundException.class,
+                () -> userService.updateUserDetails(userMapper.toDto(userWithBasicDetails))) ;
     }
 
     @Test
@@ -158,12 +172,15 @@ public class UserServiceTest {
         UserDto dummyData = userMapper.toDto(userWithBasicDetails);
         User userWithChangedBasicDetails = userWithBasicDetails;
         userWithChangedBasicDetails.setFirstName("Akshay");
+        userWithChangedBasicDetails.setLastName("abc");
         UserDto changedDummyData = userMapper.toDto(userWithChangedBasicDetails);
         UserDto responseFromService = userService.updateBasicDetails(userMapper.toDto(userWithBasicDetails));
         assert Objects.equals(dummyData.getEmail(), responseFromService.getEmail());
         assert !Objects.equals(dummyData.getFirstName(), responseFromService.getFirstName());
         assert Objects.equals(changedDummyData.getFirstName(), responseFromService.getFirstName());
+        assertNotEquals(dummyData.getLastName(),responseFromService.getLastName());
     }
+
 
     @TestConfiguration
     static class UserServiceTestContextConfiguration {

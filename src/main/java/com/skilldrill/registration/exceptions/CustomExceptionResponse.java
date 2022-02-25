@@ -18,7 +18,7 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
                 new ExceptionResponse(
                         new Date(),
                         ex.getMessage(),
-                        String.valueOf(HttpStatus.NOT_FOUND),
+                        404,
                         request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
@@ -29,7 +29,7 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
                 new ExceptionResponse(
                         new Date(),
                         ex.getMessage(),
-                        String.valueOf(HttpStatus.BAD_REQUEST),
+                        400,
                         request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
@@ -40,7 +40,7 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
                 new ExceptionResponse(
                         new Date(),
                         ex.getMessage(),
-                        String.valueOf(HttpStatus.NOT_ACCEPTABLE),
+                        406,
                         request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_ACCEPTABLE);
     }
@@ -51,9 +51,17 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
                 new ExceptionResponse(
                         new Date(),
                         ex.getMessage(),
-                        String.valueOf(HttpStatus.EXPECTATION_FAILED),
+                        417,
                         request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @ExceptionHandler(ExpiredTokenException.class)
+    public final ResponseEntity<Object> handleExpiredTokenException(ExpiredTokenException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(500,
+                        ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

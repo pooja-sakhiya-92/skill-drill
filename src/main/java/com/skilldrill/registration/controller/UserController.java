@@ -81,7 +81,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(response);
         }
         UserDto responseBody = userService.registerUser(userDto);
-        return ResponseEntity.ok().body(ResponseStructure.createResponse(HttpStatus.SC_OK,
+        return ResponseEntity.status(201).body(ResponseStructure.createResponse(HttpStatus.SC_CREATED,
                 messageSource.getMessage("user.registration.successful",
                         null, MessageSourceAlternateResource.USER_LOGIN_SUCCESSFUL, Locale.ENGLISH), responseBody));
     }
@@ -94,13 +94,9 @@ public class UserController {
                             MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
         }
         UserDto responseBody;
-        try {
-            responseBody = userService.verifyEmail(email, otp);
-        } catch (ApiException e) {
-            return ResponseEntity.status(500).body(ResponseStructure.createResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    messageSource.getMessage("verification.token.expired", null,
-                            MessageSourceAlternateResource.VERIFICATION_TOKEN_EXPIRED, Locale.ENGLISH)));
-        }
+
+        responseBody = userService.verifyEmail(email, otp);
+
         if (responseBody == null)
             return ResponseEntity.status(406).body(ResponseStructure.createResponse(HttpStatus.SC_NOT_ACCEPTABLE,
                     messageSource.getMessage("invalid.email.otp", null,
