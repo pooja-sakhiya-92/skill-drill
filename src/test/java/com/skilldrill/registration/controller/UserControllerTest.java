@@ -1,5 +1,4 @@
 package com.skilldrill.registration.controller;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skilldrill.registration.dto.UserDto;
 import com.skilldrill.registration.model.AuthRequest;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,10 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
 
 
 @WebMvcTest(value = UserController.class)
@@ -79,6 +75,16 @@ public class UserControllerTest {
     }
 
     @Test
+    public void testGenerateToken() throws Exception{
+        //set data for AuthRequest
+        AuthRequest authReq= new AuthRequest();
+        authReq.setUserName("Sai");
+        authReq.setPassword("12345");
+        String jsonBody= mapper.writeValueAsString(authReq);
+        mockMvc.perform(post("http://localhost:9090/api/user/login").contentType(MediaType.APPLICATION_JSON).content(jsonBody).accept(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
     public void testRegisterUser()throws Exception{
         Assertions.assertNotNull(userDto);
         //set error data in Map
@@ -94,6 +100,15 @@ public class UserControllerTest {
         String jsonBody= mapper.writeValueAsString(userDto);
         mockMvc.perform(post("http://localhost:9090/api/user/registration").contentType(MediaType.APPLICATION_JSON).content(jsonBody).accept(MediaType.APPLICATION_JSON));
     }
+
+    @Test
+      public void testVerifyEmail()throws  Exception{
+          String email="saishankarsingh@green-apex.com";
+          String otp="54756";
+          Mockito.when(userService.verifyEmail(email,otp)).thenReturn(userDto);
+          mockMvc.perform(put("http://localhost:9090/api/user/verify/email").contentType(MediaType.APPLICATION_JSON_VALUE).content(email).accept(MediaType.APPLICATION_JSON_VALUE));
+
+      }
 
     @Test
     public void testSetUpdateFlag() throws Exception {
@@ -129,4 +144,21 @@ public class UserControllerTest {
         mockMvc.perform(put("http://localhost:9090/api/user/add/user-details").contentType(MediaType.APPLICATION_JSON).content(jsonBody).accept(MediaType.APPLICATION_JSON));
 
     }
+
+    @Test
+    public void testUpdateBasicDetails() throws Exception{
+        //set error data in Map
+        String err1="TECHNICAL_DETAILS_UPDATE_FAILED";
+        String err2="TECHNICAL_DETAILS_UPDATE_SUCCESSFUL";
+        Map<String, String> mappedError =new HashMap<>();
+        //List<String> errors= new ArrayList<>();
+        mappedError.put("Anil1234", "anil");
+        mappedError.put("Vijay12", "vijay");
+        mappedError.put("Ankit123", "ankit");
+        Mockito.when(userValidations.validate(userDto)).thenReturn(mappedError);
+        String jsonBody= mapper.writeValueAsString(userDto);
+        mockMvc.perform(put("http://localhost:9090/api/user/update/basic-details").contentType(MediaType.APPLICATION_JSON).content(jsonBody).accept(MediaType.APPLICATION_JSON));
+        // mockMvc.perform(put("/api/user/update/basic-details").contentType(MediaType.APPLICATION_JSON).content(jsonBody).accept(MediaType.APPLICATION_JSON)).andExpect().
+    }
+
 }
