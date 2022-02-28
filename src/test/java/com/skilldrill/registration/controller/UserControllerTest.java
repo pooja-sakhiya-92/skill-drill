@@ -106,8 +106,8 @@ public class UserControllerTest {
           String email="saishankarsingh@green-apex.com";
           String otp="54756";
           Mockito.when(userService.verifyEmail(email,otp)).thenReturn(userDto);
-          mockMvc.perform(put("http://localhost:9090/api/user/verify/email").contentType(MediaType.APPLICATION_JSON_VALUE).content(email).accept(MediaType.APPLICATION_JSON_VALUE));
-
+          //mockMvc.perform(put("http://localhost:9090/api/user/verify/email").contentType(MediaType.APPLICATION_JSON_VALUE).content(email).accept(MediaType.APPLICATION_JSON_VALUE));
+          mockMvc.perform(put("http://localhost:9090/api/user/verify/email").contentType(MediaType.APPLICATION_JSON).param("email", email).param("otp", otp).contentType(MediaType.APPLICATION_JSON));
       }
 
     @Test
