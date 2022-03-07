@@ -41,4 +41,17 @@ public class MessageSourceAlternateResource {
     public static final String UPDATEFLAG_ALREADY_SET = "Update Flag already set";
     public static final String INVALID_EMAIL_OTP = "Invalid OTP!. Verification failed";
     public static final String VERIFICATION_TOKEN_EXPIRED = "OTP for email verification expired";
+
+    //Contribution Response message
+    public static final String CONTRIBUTION_ADDED_SUCCESSFUL = "Contribution Successfully Added.";
+    public static final String IMAGE_ADDED_SUCCESSFUL = "Image Successfully Added.";
+    public static final String CONTRIBUTION_UPDATED_SUCCESSFUL = "Contribution Successfully updated";
+    public static final String CONTRIBUTION_DELETED_SUCCESSFUL = "Contribution Successfully deleted";
+    public static final String CONTRIBUTION_FETCHED_SUCCESSFUL = "All fetched";
+
+    //Contribution validations
+    public static final String VALIDATION_CONTRIBUTION_BODY_FAILED = "Please enter all the details of the contribution";
+    public static final String VALIDATION_CONTRIBUTION_TYPE_FAILED = "Please specify a valid contribution type";
+    public static final String VALIDATION_URL_FAILED = "Please enter a valid URL";
+    public static final String CONTRIBUTION_ADD_FAILED = "Something went wrong!";
 }
