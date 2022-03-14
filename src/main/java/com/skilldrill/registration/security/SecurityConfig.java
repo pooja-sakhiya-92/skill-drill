@@ -53,7 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/user/registration", "/api/user/verify/email", "/api/user/login","/api/contribution/save","/api/contribution/save/image","/api/contribution/update","/api/contribution/delete","/api/contribution/get-contributions").permitAll()
+                .antMatchers("/api/user/registration", "/api/user/verify/email", "/api/user/login","/api/contribution/save","/api/contribution/save/image","/api/contribution/update",
+                        "/api/contribution/delete","/api/contribution/get-contributions","/api/ratings/save","/api/ratings/get","/api/ratings/update","/api/ratings/delete","/api/badges/assign",
+                        "/api/badges/icon","/api/badges/update","/api/badges/delete","/api/badges/get-all").permitAll()
                 .antMatchers("/api/user/update/technical-details", "/api/user/verify/password", "api/user/add/user-details").hasAnyRole("GENERAL", "ADMIN")
                 .antMatchers("api/user/google-login").permitAll()
                 .anyRequest().authenticated()

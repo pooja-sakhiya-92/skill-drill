@@ -75,4 +75,16 @@ public class CustomExceptionResponse extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidBadgeException.class)
+    public final ResponseEntity<Object> handleBadgeException(InvalidBadgeException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
+                        new Date(),
+                        ex.getMessage(),
+                        400,
+                        request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+
+    }
+
 }

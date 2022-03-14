@@ -49,9 +49,31 @@ public class MessageSourceAlternateResource {
     public static final String CONTRIBUTION_DELETED_SUCCESSFUL = "Contribution Successfully deleted";
     public static final String CONTRIBUTION_FETCHED_SUCCESSFUL = "All fetched";
 
+    //Rating Response message
+    public static final String RATINGS_ADDED_SUCCESSFUL = "Ratings Successfully Added.";
+    public static final String RATINGS_UPDATED_SUCCESSFUL = "Ratings Successfully updated";
+    public static final String RATINGS_DELETED_SUCCESSFUL = "Ratings Successfully deleted";
+    public static final String RATINGS_FETCHED_SUCCESSFUL = "All fetched";
+
+
     //Contribution validations
     public static final String VALIDATION_CONTRIBUTION_BODY_FAILED = "Please enter all the details of the contribution";
     public static final String VALIDATION_CONTRIBUTION_TYPE_FAILED = "Please specify a valid contribution type";
     public static final String VALIDATION_URL_FAILED = "Please enter a valid URL";
     public static final String CONTRIBUTION_ADD_FAILED = "Something went wrong!";
+
+    //Ratings validations
+    public static final String VALIDATION_RATINGS_BODY_FAILED = "Please enter all the details of the Ratings";
+    public static final String VALIDATION_RATINGS_STARS_FAILED = "You can not add more than 5 star and less than 1 star";
+    public static final String VALIDATION_RATINGS_COMMENTS_FAILED = "Please enter Comments between 1 to 240 character";
+    public static final String RATINGS_ADD_FAILED = "Something went wrong!";
+
+    //Badges validation
+    public static final String VALIDATION_BADGES_BODY_FAILED = "Please enter all the details of the badges";
+    public static final String VALIDATION_BADGE_VERSION_FAILED = "Please enter a valid version tag!";
+    public static final String VALIDATION_BADGES_DESCRIPTION_FAILED = "enter description between 1 to 240 character";
+    public static final String BADGES_ADD_FAILED = "Badges not added!";
+    public static final String BADGES_ADDED_SUCCESSFUL = "Badges successfully added";
+    public static final String BADGES_UPDATED_SUCCESSFUL = "Badges Updated";
+    public static final String BADGES_DELETED_SUCCESSFUL = "Badges deleted";
 }
