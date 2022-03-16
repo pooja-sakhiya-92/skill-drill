@@ -8,7 +8,6 @@ import com.skilldrill.registration.exceptions.FileStorageException;
 import com.skilldrill.registration.exceptions.InvalidRequestException;
 import com.skilldrill.registration.exceptions.NotFoundException;
 import com.skilldrill.registration.mapper.BadgeMapper;
-import com.skilldrill.registration.mapper.RatingsMapper;
 import com.skilldrill.registration.model.Badges;
 import com.skilldrill.registration.model.User;
 import com.skilldrill.registration.repository.BadgeRepository;
@@ -22,15 +21,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class BadgeServiceImpl implements BadgeService {
@@ -45,17 +41,15 @@ public class BadgeServiceImpl implements BadgeService {
 
     private final RatingsRepository ratingsRepository;
 
-    private final RatingsMapper ratingsMapper;
-
 
     @Autowired
-    public BadgeServiceImpl(BadgeRepository badgeRepository, BadgeMapper badgeMapper, MessageSource messageSource, UserRepository userRepository, RatingsRepository ratingsRepository, RatingsMapper ratingsMapper) {
+    public BadgeServiceImpl(BadgeRepository badgeRepository, BadgeMapper badgeMapper, MessageSource messageSource, UserRepository userRepository, RatingsRepository ratingsRepository) {
         this.badgeRepository = badgeRepository;
         this.badgeMapper = badgeMapper;
         this.messageSource = messageSource;
         this.userRepository = userRepository;
         this.ratingsRepository = ratingsRepository;
-        this.ratingsMapper = ratingsMapper;
+
     }
 
     @Override
@@ -66,7 +60,7 @@ public class BadgeServiceImpl implements BadgeService {
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
         ratingsRepository.findByUser(user)
                 .orElseThrow(() -> new NotFoundException("rating doesn't exist"));
-        if(!hasThreeBadge(userName)) {
+        if (!hasThreeBadge(userName)) {
             badges.setUser(user);
 
             badges.setBadge(BadgeType.valueOf(badgesDto.getBadge()));
@@ -84,7 +78,6 @@ public class BadgeServiceImpl implements BadgeService {
         } else {
             throw new InvalidRequestException("Cant add more than 3 badge");
         }
-
     }
 
     public boolean hasThreeBadge(String userName) {
@@ -92,7 +85,7 @@ public class BadgeServiceImpl implements BadgeService {
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
         List<Badges> badgesList = badgeRepository.findByUser(user);
-        return badgesList.size() > 2 ? true : false;
+        return badgesList.size() > 2;
     }
 
     @Override
