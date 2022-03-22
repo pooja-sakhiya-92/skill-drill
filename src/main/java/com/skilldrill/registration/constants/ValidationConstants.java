@@ -17,5 +17,7 @@ public class ValidationConstants {
     public static String STARS = "[1-5]";
 
     public static String VERSION = "V\\.\\d\\.\\d";
+
+    public static String CREATIVESKILL="[a-zA-Z]+";
 }
 
