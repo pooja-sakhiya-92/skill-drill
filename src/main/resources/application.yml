@@ -1,0 +1,35 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: skill-drill
+  messages:
+    basename: messages/response-messages, messages/email-messages, messages/exception-messages
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 611158905796-2t65k3tbj4rn3a7rr03n1mdumpkd7f33.apps.googleusercontent.com
+            client-secret: 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
+    resource:
+      filter-order: 3
+
+server:
+  port: 9090
+  thymeleaf:
+    encoding: UTF-8
+    prefix:
+      classpath: /templates/
+
+sender:
+  email: applicationgreenapex@gmail.com
+  password: abcdefgh12345678@@
+
+twilio:
+  account_sid: AC7180f49b7e4d33c10e1c05c4a90aaad1
+  auth_token:
+  path_service_sid: VAc248f422c8f5ad04ef23c1d12c9f5e97
+  
+  
