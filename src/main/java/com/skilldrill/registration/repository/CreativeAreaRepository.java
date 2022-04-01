@@ -1,6 +1,6 @@
 package com.skilldrill.registration.repository;
 
-import com.skilldrill.registration.dto.CreativeAreaDto;
+
 import com.skilldrill.registration.model.CreativeArea;
 import com.skilldrill.registration.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -14,5 +14,5 @@ public interface CreativeAreaRepository extends MongoRepository<CreativeArea,Str
    Optional<CreativeArea> findByCreativeSkill(String creativeSkill);
 
 
-    List<CreativeAreaDto> findByUser(User user);
+    List<CreativeArea> findByUser(User user);
 }

@@ -9,18 +9,16 @@ import com.skilldrill.registration.model.CreativeArea;
 import com.skilldrill.registration.model.User;
 import com.skilldrill.registration.repository.CreativeAreaRepository;
 import com.skilldrill.registration.repository.UserRepository;
-import com.skilldrill.registration.service.CreativityService;
+import com.skilldrill.registration.service.CreativeAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
 
 @Service
-public class CreativityServiceImpl implements CreativityService {
+public class CreativeAreaServiceImpl implements CreativeAreaService {
 
     @Autowired
     private CreativeAreaRepository creativeAreaRepository;
@@ -35,16 +33,14 @@ public class CreativityServiceImpl implements CreativityService {
     private MessageSource messageSource;
 
     @Override
-    public CreativeArea addCreativity(CreativeAreaDto creativityDto) {
+    public CreativeArea addCreativity(CreativeAreaDto creativityDto,String userName) {
 
-        CreativeArea creativity = creativityMapper.toCreativeArea(creativityDto);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        User user = userRepository.findByEmail(username).get();
-        creativity.setUser(user);
-        creativity.setCreativeSkill(CreativeSkills.valueOf(creativityDto.getCreativeSkill()));
-        System.out.println(username);
-        return creativeAreaRepository.save(creativity);
+        CreativeArea creativiteArea = creativityMapper.toCreativeArea(creativityDto);
+        User user = userRepository.findByEmail(userName)
+                .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
+                        null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
+        creativiteArea.setUser(user);
+        return creativeAreaRepository.save(creativiteArea);
     }
 
     @Override
@@ -71,16 +67,12 @@ public class CreativityServiceImpl implements CreativityService {
     }
 
     @Override
-    public List<CreativeAreaDto> findAllCreativeAreas(String userName) {
+    public List<CreativeArea> findAllCreativeAreas(String userName) {
         User user = userRepository.findByEmail(userName)
                 .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",
                         null, MessageSourceAlternateResource.USER_NOT_FOUND, Locale.ENGLISH)));
         return creativeAreaRepository.findByUser(user);
-            /*.orElseThrow(() -> new NotFoundException("No ratings present"));
-    return creativeAreaMapper.toDto(creativeAreas);*/
-    /*return creativeAreaList.stream()
-            .filter(creativeArea -> creativeArea.getUser().getEmail().equals(userName))
-            .collect(Collectors.toList());*/
+
     }
 
 

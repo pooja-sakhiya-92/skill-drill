@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public interface CreativityService {
+public interface CreativeAreaService {
 
-    CreativeArea addCreativity(CreativeAreaDto creativityDto);
+    CreativeArea addCreativity(CreativeAreaDto creativityDto,String userName);
 
     CreativeAreaDto updateCreativity(String creativeSkill,CreativeAreaDto creativityDto);
 
     void deleteCreativeArea(String creativeSkill,String userName);
 
-    List<CreativeAreaDto> findAllCreativeAreas(String userName);
+    List<CreativeArea> findAllCreativeAreas(String userName);
 }

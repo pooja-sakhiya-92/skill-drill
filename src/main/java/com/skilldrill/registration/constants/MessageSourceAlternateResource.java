@@ -76,4 +76,16 @@ public class MessageSourceAlternateResource {
     public static final String BADGES_ADDED_SUCCESSFUL = "Badges successfully added";
     public static final String BADGES_UPDATED_SUCCESSFUL = "Badges Updated";
     public static final String BADGES_DELETED_SUCCESSFUL = "Badges deleted";
+
+
+   //craetiveArea validations
+    public static final String VALIDATION_CREATIVEAREA_BODY_FAILED = "Please enter all the details of the craetiveArea";
+    public static final String VALIDATION_CREATIVEAREA_FAILED = "creativeSkill is not valid";
+    public static final String CREATIVEAREA_ADD_FAILED = "Creativity not added!";
+    public static final String CREATIVEAREA_ADDED_SUCCESSFUL = "Creativity successfully added";
+    public static final String CREATIVEAREA_UPDATED_SUCCESSFUL = "Creativity Updated";
+    public static final String CREATIVE_AREA_DELETED_SUCCESSFULLY = "CreativeArea Successfully deleted";
+    public static final String CREATIVE_AREA_FETCHED_SUCCESSFUL="All fetched";
+    public static final String NO_CREATIVE_AREAS = "No creative Areas present.";
+    public static final String VALIDATION_CREATIVEAREA_FIELD_FAILED="Field should be string";
 }

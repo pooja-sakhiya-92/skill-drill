@@ -3,7 +3,7 @@ package com.skilldrill.registration.controller;
 import com.skilldrill.registration.constants.MessageSourceAlternateResource;
 import com.skilldrill.registration.dto.CreativeAreaDto;
 import com.skilldrill.registration.model.CreativeArea;
-import com.skilldrill.registration.service.CreativityService;
+import com.skilldrill.registration.service.CreativeAreaService;
 import com.skilldrill.registration.utilities.misc.ResponseStructure;
 import com.skilldrill.registration.utilities.validations.CreativeAreaValidations;
 import org.apache.http.HttpStatus;
@@ -19,11 +19,11 @@ import java.util.Map;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @RestController
-@RequestMapping("api/creativity")
+@RequestMapping("api/creativeArea")
 public class CreativeAreaController {
 
     @Autowired
-    private CreativityService creativeAreaService;
+    private CreativeAreaService creativeAreaService;
 
     @Autowired
     private MessageSource messageSource;
@@ -32,16 +32,16 @@ public class CreativeAreaController {
     private CreativeAreaValidations creativeAreaValidations;
 
     @PostMapping("save")
-    public ResponseEntity<?> addCreativity(@RequestBody CreativeAreaDto creativityDto) {
+    public ResponseEntity<?> addCreativity(@RequestBody CreativeAreaDto creativityDto,@RequestParam String userName) {
         Map<String, String> errors = creativeAreaValidations.validate(creativityDto);
         if (!isEmpty(errors)) {
             ResponseStructure<Void> response = ResponseStructure.createResponse(HttpStatus.SC_BAD_REQUEST,
                     messageSource.getMessage("",
-                            null, MessageSourceAlternateResource.CREATIVEAREA_ADD_FAILED, Locale.ENGLISH));
+                            null, MessageSourceAlternateResource.VALIDATION_CREATIVEAREA_BODY_FAILED, Locale.ENGLISH));
             response.setErrors(errors);
             return ResponseEntity.badRequest().body(response);
         }
-        CreativeArea responseBody = creativeAreaService.addCreativity(creativityDto);
+        CreativeArea responseBody = creativeAreaService.addCreativity(creativityDto,userName);
         return ResponseEntity.status(201).body(ResponseStructure.createResponse(HttpStatus.SC_CREATED,
                 messageSource.getMessage("", null,
                         MessageSourceAlternateResource.CREATIVEAREA_ADDED_SUCCESSFUL,
@@ -73,8 +73,7 @@ public class CreativeAreaController {
 
     @GetMapping("get")
     public ResponseEntity<?> getAllCreativeAreas(String userName) {
-        // List<CreativeArea> response = creativeAreaService.findAllCreativeAreas(userName);
-        List<CreativeAreaDto> response=creativeAreaService.findAllCreativeAreas(userName);
+        List<CreativeArea> response=creativeAreaService.findAllCreativeAreas(userName);
         if (response.isEmpty()) {
             return ResponseEntity.status(404).body(ResponseStructure.createResponse(HttpStatus.SC_NOT_FOUND,
                     messageSource.getMessage("", null,

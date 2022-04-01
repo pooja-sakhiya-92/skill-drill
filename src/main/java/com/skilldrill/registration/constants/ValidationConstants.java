@@ -18,6 +18,10 @@ public class ValidationConstants {
 
     public static String VERSION = "V\\.\\d\\.\\d";
 
-    public static String CREATIVESKILL="[a-zA-Z]+";
+    public static String CREATIVEAREAFEILD="[a-zA-Z]+";
+
+    public static String CREATIVESKILL_FEILD = "DANCING|SINGING|PAINTING|ATHLETICS|GAMES";
+
+
 }
 
