@@ -10,17 +10,18 @@ public class ValidationConstants {
     public static String DEPARTMENT_CONDITION = "BACKEND|FRONTEND|UI|UX|QA|HR";
 
     public static String CONTRIBUTION_TYPE_CONDITION = "VIDEO|AUDIO|LINK|IMAGE|FILES";
-    public static String URL_CONDITION = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\." +
-            "[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)";
+//    public static String URL_CONDITION = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\." +
+//            "[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()!@:%_\\+.~#?&\\/\\/=]*)";
+    public static String URL_CONDITION = "[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)";
 
     public static String COMMENTS = "^.{1,50}$";
     public static String STARS = "[1-5]";
 
     public static String VERSION = "V\\.\\d\\.\\d";
 
-    public static String CREATIVEAREAFEILD="[a-zA-Z]+";
+    public static String CREATIVE_AREA_FIELD="[a-zA-Z]+";
 
-    public static String CREATIVESKILL_FEILD = "DANCING|SINGING|PAINTING|ATHLETICS|GAMES";
+    public static String CREATIVE_SKILL_FIELD = "DANCING|SINGING|PAINTING|ATHLETICS|GAMES";
 
 
 }

@@ -21,27 +21,27 @@ public class CreativeAreaValidations {
 
     public Map<String, String> validate(CreativeAreaDto creativityDto) {
         Map<String, String> mappedError = new HashMap<>();
-        if (isEmpty(creativityDto.getAchievements())) {
+        if (isEmpty(creativityDto)) {
             mappedError.put("CreativeArea Body", messageSource.getMessage("",
                     null, MessageSourceAlternateResource.VALIDATION_CREATIVEAREA_BODY_FAILED, Locale.ENGLISH));
         }
-        if (isEmpty(creativityDto.getSpecialization())) {
-            mappedError.put("CreativeArea Body", messageSource.getMessage("",
-                    null, MessageSourceAlternateResource.VALIDATION_CREATIVEAREA_BODY_FAILED, Locale.ENGLISH));
-        }
+//        if (isEmpty(creativityDto.getSpecialization())) {
+//            mappedError.put("CreativeArea Body", messageSource.getMessage("",
+//                    null, MessageSourceAlternateResource.VALIDATION_CREATIVEAREA_BODY_FAILED, Locale.ENGLISH));
+//        }
 
-        if (!creativityDto.getCreativeSkill().matches(ValidationConstants.CREATIVESKILL_FEILD)) {
-            mappedError.put("Comments", messageSource.getMessage("",
+        if (!creativityDto.getCreativeSkill().matches(ValidationConstants.CREATIVE_SKILL_FIELD)) {
+            mappedError.put("creativeSkill", messageSource.getMessage("",
                     null, MessageSourceAlternateResource.VALIDATION_CREATIVEAREA_FAILED, Locale.ENGLISH));
 
         }
-        if (!creativityDto.getAchievements().matches(ValidationConstants.CREATIVEAREAFEILD)) {
-            mappedError.put("CreativeArea Body", messageSource.getMessage("",
+        if (!creativityDto.getAchievements().matches(ValidationConstants.CREATIVE_AREA_FIELD)) {
+            mappedError.put("achievements", messageSource.getMessage("",
                     null, MessageSourceAlternateResource.VALIDATION_CREATIVEAREA_FIELD_FAILED, Locale.ENGLISH));
 
         }
-        if (!creativityDto.getSpecialization().matches(ValidationConstants.CREATIVEAREAFEILD)) {
-            mappedError.put("CreativeArea Body", messageSource.getMessage("",
+        if (!creativityDto.getSpecialization().matches(ValidationConstants.CREATIVE_AREA_FIELD)) {
+            mappedError.put("specialization", messageSource.getMessage("",
                     null, MessageSourceAlternateResource.VALIDATION_CREATIVEAREA_FIELD_FAILED, Locale.ENGLISH));
 
         }
