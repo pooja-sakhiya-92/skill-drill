@@ -88,4 +88,13 @@ public class MessageSourceAlternateResource {
     public static final String CREATIVE_AREA_FETCHED_SUCCESSFUL="All fetched";
     public static final String NO_CREATIVE_AREAS = "No creative Areas present.";
     public static final String VALIDATION_CREATIVEAREA_FIELD_FAILED="Field should be string";
+
+    //appreciation validations
+    public static final String VALIDATION_APPRECIATION_BODY_FAILED = "Please enter all the details of the appreciation";
+    public static final String APPRECIATION_ADD_FAILED = "appreciation not added";
+    public static final String APPRECIATION_ADDED_SUCCESSFULLY = "appreciation successfully added";
+    public static final String APPRECIATION_UPDATED_SUCCESSFUL = "Appreciation updated successfully";;
+    public static final String APPRECIATION_DELETED_SUCCESSFULLY = "Appreciation Successfully deleted";
+    public static final String NO_APPRECIATION_FOUND = "No appreciations found";
+    public static final String APPRECIATION_FETCHED_SUCCESSFUL = "All fetched";
 }
