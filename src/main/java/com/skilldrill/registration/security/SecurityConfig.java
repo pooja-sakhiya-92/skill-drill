@@ -53,17 +53,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/user/registration", "/api/user/verify/email", "/api/user/login","/api/contribution/save","/api/contribution/save/image","/api/contribution/update",
-                        "/api/contribution/delete","/api/contribution/get-contributions","/api/ratings/save","/api/ratings/get","/api/ratings/update","/api/ratings/delete","/api/badges/assign",
-                        "/api/badges/icon","/api/badges/update","/api/badges/delete","/api/badges/get-all","/swagger-ui/**","/v3/api-docs","/swagger-resources/**").permitAll()
+                .antMatchers("/api/user/registration", "/api/user/verify/email", "/api/user/login","/api/contribution/save/image","/api/contribution/*","/api/ratings/*","/api/badges/*"
+                        ,"/swagger-ui/**","/v3/api-docs","/swagger-resources/**").permitAll()
                 .antMatchers("/api/user/update/technical-details", "/api/user/verify/password", "api/user/add/user-details").hasAnyRole("GENERAL", "ADMIN")
-                .antMatchers("/api/creativeArea/*","/api/category/*").permitAll()
+                .antMatchers("/api/creativeArea/*").permitAll()
+                .antMatchers("/api/category/*","/api/skills/*").hasAnyRole("ADMIN")
                 .antMatchers("/api/Appreciation/*").permitAll()
                 .antMatchers("api/user/google-login").permitAll()
                 .anyRequest().authenticated()
                 .and().oauth2Login();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
 
 }
