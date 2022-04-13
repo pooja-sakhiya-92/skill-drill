@@ -93,8 +93,19 @@ public class MessageSourceAlternateResource {
     public static final String VALIDATION_APPRECIATION_BODY_FAILED = "Please enter all the details of the appreciation";
     public static final String APPRECIATION_ADD_FAILED = "appreciation not added";
     public static final String APPRECIATION_ADDED_SUCCESSFULLY = "appreciation successfully added";
-    public static final String APPRECIATION_UPDATED_SUCCESSFUL = "Appreciation updated successfully";;
+    public static final String APPRECIATION_UPDATED_SUCCESSFUL = "Appreciation updated successfully";
     public static final String APPRECIATION_DELETED_SUCCESSFULLY = "Appreciation Successfully deleted";
     public static final String NO_APPRECIATION_FOUND = "No appreciations found";
     public static final String APPRECIATION_FETCHED_SUCCESSFUL = "All fetched";
+
+    //Topic Validations
+    public static final String VALIDATION_TOPIC_BODY_FAILED = "Please enter all the details of the topic";
+    public static final String VALIDATION_SKILL_NAME_FAILED = "Please specify a valid skill name";
+    public static final String VALIDATION_CREATED_DATE_FAILED = "Please enter a valid date format";
+    public static final String TOPIC_ADD_FAILED = "Something went wrong!";
+    public static final String TOPICS_NOT_FOUND = "Topic not found";
+    public static final String TOPICS_FETCHED_SUCCESSFUL = "Topics are fetched";
+    public static final String TOPIC_DELETED_SUCCESSFUL = "Topic successfully deleted";
+    public static final String TOPIC_ADDED_SUCCESSFUL ="Topic added successfully" ;
+    public static final String VALIDATION_TOPIC_NAME = "Topic Name can not be empty";
 }

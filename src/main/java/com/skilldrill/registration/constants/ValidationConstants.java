@@ -23,6 +23,9 @@ public class ValidationConstants {
 
     public static String CREATIVE_SKILL_FIELD = "DANCING|SINGING|PAINTING|ATHLETICS|GAMES";
 
+    public static String DATE_FORMAT="[0-9]{1,2}(/|-)[0-9]{1,2}(/|-)[0-9]{4}";
+
+
 
 }
 
