@@ -56,9 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/registration", "/api/user/verify/email", "/api/user/login","/api/contribution/save/image","/api/contribution/*","/api/ratings/*","/api/badges/*"
                         ,"/swagger-ui/**","/v3/api-docs","/swagger-resources/**").permitAll()
                 .antMatchers("/api/user/update/technical-details", "/api/user/verify/password", "api/user/add/user-details").hasAnyRole("GENERAL", "ADMIN")
-                .antMatchers("/api/creativeArea/*").permitAll()
-                .antMatchers("/api/category/*","/api/skills/*","/api/topic/**").permitAll()
-                .antMatchers("/api/Appreciation/*").permitAll()
+                .antMatchers("/api/creativeArea/*","/api/Appreciation/*").permitAll()
+                .antMatchers("/api/category/*","/api/skills/*","/api/topic/**","/api/SessionsAndWebinars/*").permitAll()
                 .antMatchers("api/user/google-login").permitAll()
                 .anyRequest().authenticated()
                 .and().oauth2Login();
