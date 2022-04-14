@@ -43,7 +43,6 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic addTopic(TopicDto topicDto) {
         Topic topic = topicMapper.toTopic(topicDto);
-        // boolean topicNameExist =topicRepository.findByTopicName(topicDto.getTopicName()).isPresent();
             Skills skill = skillsRepository.findBySkillName(topicDto.getSkillName())
                     .orElseThrow(() -> new NotFoundException("Skill not found"));
             topic.setSkills(skill);
