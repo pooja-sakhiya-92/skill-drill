@@ -82,7 +82,7 @@ public class TopicController {
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity<?> archiveContribution(@RequestParam String topicName) {
+    public ResponseEntity<?> archiveTopic(@RequestParam String topicName) {
         topicService.deleteTopic(topicName);
 
         return ResponseEntity.status(200).body(ResponseStructure.createResponse(HttpStatus.SC_OK,
@@ -91,5 +91,20 @@ public class TopicController {
                         Locale.ENGLISH)));
     }
 
+    @GetMapping("parentTopic")
+    public ResponseEntity<?> getAllSubTopicsByTopicName(@RequestParam String parentTopicName) {
+        List<Topic> response = topicService.getAllSubTopicsByTopicName(parentTopicName);
+        if (response.isEmpty()) {
+            return ResponseEntity.status(404).body(ResponseStructure.createResponse(HttpStatus.SC_NOT_FOUND,
+                    messageSource.getMessage("", null,
+                            MessageSourceAlternateResource.TOPICS_NOT_FOUND,
+                            Locale.ENGLISH)));
+        }
+        return ResponseEntity.status(200).body(ResponseStructure.createResponse(HttpStatus.SC_OK,
+                messageSource.getMessage("", null,
+                        MessageSourceAlternateResource.TOPICS_FETCHED_SUCCESSFUL,
+                        Locale.ENGLISH), response));
+
+    }
 
 }

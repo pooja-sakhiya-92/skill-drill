@@ -16,4 +16,6 @@ public interface TopicRepository extends MongoRepository<Topic, ObjectId> {
     Optional<Topic> findByTopicName(String topicName);
 
     List<Topic> findTopicBySkills(Skills skills);
+
+    List<Topic> findTopicByParentTopic(Topic parentTopic);
 }

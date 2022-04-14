@@ -4,6 +4,7 @@ package com.skilldrill.registration.utilities.validations;
 import com.skilldrill.registration.constants.MessageSourceAlternateResource;
 import com.skilldrill.registration.constants.ValidationConstants;
 import com.skilldrill.registration.dto.TopicDto;
+import com.skilldrill.registration.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,8 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class TopicValidations {
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    private TopicRepository topicRepository;
 
     public Map<String, String> validate(TopicDto topicDto) {
         Map<String,String> mappedError = new HashMap<>();
@@ -32,9 +35,14 @@ public class TopicValidations {
                     null, MessageSourceAlternateResource.VALIDATION_CREATED_DATE_FAILED,Locale.ENGLISH));
         }
         if(isEmpty(topicDto.getTopicName())){
-            mappedError.put("createdAt",messageSource.getMessage("",
+            mappedError.put("topicName",messageSource.getMessage("",
                     null, MessageSourceAlternateResource.VALIDATION_TOPIC_NAME,Locale.ENGLISH));
         }
+        if(topicRepository.findByTopicName(topicDto.getTopicName()).isPresent()){
+            mappedError.put("topicName",messageSource.getMessage("",
+                    null, MessageSourceAlternateResource.VALIDATION_TOPIC_NAME_EXISTS,Locale.ENGLISH));
+        }
+
 
         return isEmpty(mappedError) ? Collections.emptyMap() : mappedError;
     }

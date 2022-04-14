@@ -30,4 +30,6 @@ public class TopicDto {
     private String createdAt;
 
     private String skillName;
+
+    private String ParentTopicName;
 }

@@ -16,4 +16,8 @@ public interface TopicService {
     void deleteTopic(String topicName);
 
     List<Topic> getTopicsBySkill(String skillName);
+
+    List<Topic> getAllSubTopicsByTopicName(String parentTopicName);
+
+    public Topic getTopicByTopicName(String topicName);
 }

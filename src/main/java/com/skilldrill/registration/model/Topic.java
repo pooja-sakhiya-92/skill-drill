@@ -18,7 +18,6 @@ public class Topic {
     @Field("topic_id")
     private String id;
 
-
     @Field("topic_name")
     @Indexed(unique = true)
     private String topicName;
@@ -32,6 +31,7 @@ public class Topic {
     @DateTimeFormat(fallbackPatterns = "dd/mm/yyyy")
     private String createdAt;
 
-
     private Skills skills;
+
+    private Topic parentTopic;
 }

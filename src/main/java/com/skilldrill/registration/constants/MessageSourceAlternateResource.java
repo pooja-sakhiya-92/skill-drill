@@ -108,6 +108,7 @@ public class MessageSourceAlternateResource {
     public static final String TOPIC_DELETED_SUCCESSFUL = "Topic successfully deleted";
     public static final String TOPIC_ADDED_SUCCESSFUL ="Topic added successfully" ;
     public static final String VALIDATION_TOPIC_NAME = "Topic Name can not be empty";
+    public static final String VALIDATION_TOPIC_NAME_EXISTS = "TopicName doesn't exist";
 
     //
     public static final String SESSIONS_AND_WEBINARS_ADDED_SUCCESSFULLY = "session or webinar details added successfully ";
@@ -115,4 +116,5 @@ public class MessageSourceAlternateResource {
     public static final String SESSION_OR_WEBINAR_DELETED_SUCCESSFULLY = "session or webinar deleted successfully";
     public static final String NO_SESSIONS_OR_WEBINARS_FOUND = "No session or webinar found";
     public static final String SESSION_OR_WEBINAR_DETAILS_FETCHED_SUCCESSFULLY = "session or webinar details fetched successfully";
+
 }
