@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         ,"/swagger-ui/**","/v3/api-docs","/swagger-resources/**").permitAll()
                 .antMatchers("/api/user/update/technical-details", "/api/user/verify/password", "api/user/add/user-details").hasAnyRole("GENERAL", "ADMIN")
                 .antMatchers("/api/creativeArea/*","/api/Appreciation/*").permitAll()
-                .antMatchers("/api/category/*","/api/skills/*","/api/topic/**","/api/SessionsAndWebinars/*").permitAll()
+                .antMatchers("/api/category/*","/api/skills/*","/api/topic/**","/api/SessionsAndWebinars/*").hasAnyRole( "ADMIN")
                 .antMatchers("api/user/google-login").permitAll()
                 .anyRequest().authenticated()
                 .and().oauth2Login();
