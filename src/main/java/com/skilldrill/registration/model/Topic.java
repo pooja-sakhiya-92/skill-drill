@@ -15,7 +15,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Data
 public class Topic {
     @Id
-    @Field("topic_id")
     private String id;
 
     @Field("topic_name")
@@ -29,9 +28,11 @@ public class Topic {
     private String contentWriter;
 
     @DateTimeFormat(fallbackPatterns = "dd/mm/yyyy")
+    @Field("created_at")
     private String createdAt;
 
     private Skills skills;
 
+    @Field("parent_topic")
     private Topic parentTopic;
 }
